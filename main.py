@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
+from statistical_summary import statistical_summary
 
 matplotlib.use("TkAgg")
 
@@ -28,5 +29,7 @@ def show_graphs():
     plt.pie(fish_data['Species'].value_counts(), labels=fish_data['Species'].value_counts().index, autopct='%1.1f%%')
     plt.show()
 
+
+statistical_summary(fish_data)
 
 show_graphs()
