@@ -18,8 +18,8 @@ fish_data = pd.read_csv('Fish.csv')
 def show_graphs():
     # pair plot
     sns.pairplot(fish_data, hue='Species')
-    plt.figure(figsize=(12, 8))
     plt.show()
+    plt.clf()
     # weight against height
     plt.plot(fish_data["Weight"], fish_data["Height"], 'ro')
     plt.ylabel('Height')
@@ -35,7 +35,7 @@ def show_graphs():
 
 statistical_summary(fish_data)
 
-# show_graphs()
+show_graphs()
 
 
 # split data into training and testing sets
@@ -57,5 +57,3 @@ cm = confusion_matrix(y_test, y_pred)
 print(cm)
 # accuracy score
 print(accuracy_score(y_test, y_pred))
-
-
