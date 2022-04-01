@@ -36,13 +36,13 @@ def show_graphs():
 
 statistical_summary(fish_data)
 
-show_graphs()
+# show_graphs()
 
 # prepare data for models
 # split data into training and testing sets
 X = fish_data.drop('Species', axis=1)
 y = fish_data['Species']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=0)
 # standardize the data
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
@@ -58,8 +58,12 @@ y_pred = log_reg.predict(X_test)
 # confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 print(cm)
-# accuracy score
+# testing accuracy score
 print(accuracy_score(y_test, y_pred))
+# training accuracy score
+print("Test set score: {:.2f}".format(log_reg.score(X_test, y_test)))
+print("Training set score: {:.2f}".format(log_reg.score(X_train, y_train)))
+
 
 # this part of the code is related to the SVM model
 # instantiate the logistic regression model
