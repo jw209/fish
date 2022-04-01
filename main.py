@@ -8,6 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler
+from sklearn import svm
 
 matplotlib.use("TkAgg")
 
@@ -37,7 +38,7 @@ statistical_summary(fish_data)
 
 show_graphs()
 
-
+# prepare data for models
 # split data into training and testing sets
 X = fish_data.drop('Species', axis=1)
 y = fish_data['Species']
@@ -46,7 +47,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
-# instantiate the model
+
+# this part of the code is related to the logistic regression model
+# instantiate the logistic regression model
 log_reg = LogisticRegression()
 # fit the model
 log_reg.fit(X_train, y_train)
@@ -57,3 +60,16 @@ cm = confusion_matrix(y_test, y_pred)
 print(cm)
 # accuracy score
 print(accuracy_score(y_test, y_pred))
+
+# this part of the code is related to the SVM model
+# instantiate the logistic regression model
+svmModel = svm.SVC(kernel='linear')
+svmModel.fit(X_train, y_train)
+
+print("svm support vectors: {}".format(svmModel.n_support_))
+print("svmModel support vector indices: {}".format(svmModel.support_))
+print("svmModel # of support vectors in each class: {}".format(svmModel.n_support_))
+
+print("Training set score: {:.2f}".format(svmModel.score(X_train, y_train)))
+print("Test set score: {:.2f}".format(svmModel.score(X_test, y_test)))
+
