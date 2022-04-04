@@ -1,7 +1,6 @@
 # code here
 import pandas as pd
 import seaborn as sns
-import matplotlib
 import matplotlib.pyplot as plt
 from statistical_summary import statistical_summary
 from sklearn.linear_model import LogisticRegression
@@ -9,8 +8,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler
 from sklearn import svm
-
-matplotlib.use("TkAgg")
 
 fish_data = pd.read_csv('Fish.csv')
 
@@ -34,9 +31,10 @@ def show_graphs():
     plt.show()
 
 
-statistical_summary(fish_data)
+#statistical_summary(fish_data)
 
-# show_graphs()
+#show_graphs()
+
 
 # prepare data for models
 # split data into training and testing sets
