@@ -89,7 +89,7 @@ print(cm)
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
 plt.show()
 
-clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2), random_state=1, max_iter=500)
+clf = MLPClassifier(solver='adam', alpha=1e-5, hidden_layer_sizes=(20, 4), random_state=1, max_iter=4000)
 
 clf.fit(X_train, y_train)
 print("Neural network model training accuracy: {:.2f}".format(clf.score(X_train, y_train)))
