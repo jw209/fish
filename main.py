@@ -49,9 +49,10 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
+
 # this part of the code is related to the logistic regression model
 # instantiate the logistic regression model
-log_reg = LogisticRegression(C=5)
+log_reg = LogisticRegression()
 # fit the model
 log_reg.fit(X_train, y_train)
 # predict the response
@@ -59,10 +60,9 @@ y_pred = log_reg.predict(X_test)
 # confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 print(cm)
-
+# heatmap of confusion matrix
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
 plt.show()
-
 # testing accuracy score
 print(accuracy_score(y_test, y_pred))
 # training accuracy score
@@ -72,7 +72,7 @@ print("Training set score: {:.2f}".format(log_reg.score(X_train, y_train)))
 
 # this part of the code is related to the SVM model
 # instantiate the logistic regression model
-svmModel = svm.SVC(kernel='linear')
+svmModel = svm.SVC(kernel='linear', C=50)
 svmModel.fit(X_train, y_train)
 
 print("svm support vectors: {}".format(svmModel.n_support_))
@@ -82,14 +82,14 @@ print("svmModel # of support vectors in each class: {}".format(svmModel.n_suppor
 print("Training set score: {:.2f}".format(svmModel.score(X_train, y_train)))
 print("Test set score: {:.2f}".format(svmModel.score(X_test, y_test)))
 
+# confusion matrix
 cm = confusion_matrix(y_test, svmModel.predict(X_test))
 print(cm)
-
+# heatmap of confusion matrix
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
 plt.show()
 
-# this part of the code sets up a neural network model
-clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2), random_state=1)
+clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2), random_state=1, max_iter=500)
 
 clf.fit(X_train, y_train)
 print("Neural network model training accuracy: {:.2f}".format(clf.score(X_train, y_train)))
