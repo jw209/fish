@@ -1,4 +1,5 @@
 # code here
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib
@@ -10,6 +11,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler
 from sklearn import svm
 from sklearn.neural_network import MLPClassifier
+import plotly.express as px
 
 matplotlib.use("TkAgg")
 
@@ -30,6 +32,8 @@ def show_graphs():
     # boxplot of Length1 by Species
     sns.boxplot(x='Species', y='Length1', data=fish_data)
     plt.show()
+    # scatter plot of Length1 by height and wieght
+    px.scatter(fish_data, x='Height', y='Length1', size='Weight', color='Species')
     # pie-chart of number of species
     plt.pie(fish_data['Species'].value_counts(), labels=fish_data['Species'].value_counts().index, autopct='%1.1f%%')
     plt.show()
@@ -37,7 +41,7 @@ def show_graphs():
 
 statistical_summary(fish_data)
 
-# show_graphs()
+#show_graphs()
 
 # prepare data for models
 # split data into training and testing sets
@@ -51,7 +55,7 @@ X_test = sc.transform(X_test)
 
 # this part of the code is related to the logistic regression model
 # instantiate the logistic regression model
-log_reg = LogisticRegression(C=5)
+log_reg = LogisticRegression(C=10)
 # fit the model
 log_reg.fit(X_train, y_train)
 # predict the response
@@ -88,9 +92,48 @@ print(cm)
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
 plt.show()
 
-# this part of the code sets up a neural network model
-clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2), random_state=1)
+'''
+GRID = [
+    {'scaler': [StandardScaler()],
+     'estimator': [MLPClassifier(random_state=0)],
+     'estimator__solver': ['adam', 'sgd'],
+     'estimator__learning_rate_init': [0.0015],
+     'estimator__max_iter': [7000],
+     'estimator__hidden_layer_sizes': [(20, 4), (5, 2), (10, 2), (10, 10), (7, 8), (10, 16), (2, 5), (10, 7), (10, 4)],
+     'estimator__activation': ['relu', 'tanh'],
+     'estimator__alpha': [1e-5, 1e-4],
+     'estimator__early_stopping': [True, False],
+     'estimator__warm_start': [True],
+     }
+]
 
+#import the grid search object
+from sklearn.model_selection import GridSearchCV
+# import the pipeline object
+from sklearn.pipeline import Pipeline
+# import make_scorer
+from sklearn.metrics import make_scorer
+
+PIPELINE = Pipeline([('scaler', None), ('estimator', MLPClassifier())])
+
+clf = GridSearchCV(estimator=PIPELINE, param_grid=GRID,
+                            scoring=make_scorer(accuracy_score),# average='macro'),
+                            n_jobs=-1, cv=3, refit=True, verbose=1,
+                            return_train_score=False)
+'''
+
+clf = MLPClassifier(random_state=0, solver='adam', max_iter=7000, hidden_layer_sizes=(20, 4), beta_1=0.8, beta_2=0.90, epsilon=1e-20, alpha=0.00001)
 clf.fit(X_train, y_train)
+
+#print("Best parameters: {}".format(clf.best_params_))
+#print("Best score: {:.2f}".format(clf.best_score_))
+
 print("Neural network model training accuracy: {:.2f}".format(clf.score(X_train, y_train)))
 print("Neural network model testing accuracy: {:.2f}".format(clf.score(X_test, y_test)))
+
+cm = confusion_matrix(y_test, clf.predict(X_test))
+print(cm)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.show()
+
+
