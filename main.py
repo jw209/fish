@@ -1,6 +1,7 @@
 # code here
 import pandas as pd
 import seaborn as sns
+import matplotlib
 import matplotlib.pyplot as plt
 from statistical_summary import statistical_summary
 from sklearn.linear_model import LogisticRegression
