@@ -10,6 +10,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import svm
 from sklearn.neural_network import MLPClassifier
 
+#matplotlib.use("TkAgg")
+
 fish_data = pd.read_csv('Fish.csv')
 
 
@@ -49,7 +51,7 @@ X_test = sc.transform(X_test)
 
 # this part of the code is related to the logistic regression model
 # instantiate the logistic regression model
-log_reg = LogisticRegression(C=5)
+log_reg = LogisticRegression(C=10)
 # fit the model
 log_reg.fit(X_train, y_train)
 # predict the response
@@ -70,7 +72,7 @@ print("Training set score: {:.2f}".format(log_reg.score(X_train, y_train)))
 
 # this part of the code is related to the SVM model
 # instantiate the logistic regression model
-svmModel = svm.SVC(kernel='linear')
+svmModel = svm.SVC(kernel='linear', C=5)
 svmModel.fit(X_train, y_train)
 
 print("svm support vectors: {}".format(svmModel.n_support_))
@@ -87,7 +89,7 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
 plt.show()
 
 # this part of the code sets up a neural network model
-clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2), random_state=1)
+clf = MLPClassifier(solver='adam', epsilon=1e-20, hidden_layer_sizes=(20,4), random_state=0, max_iter=7000, beta_1=0.8, beta_2=0.90, alpha=0.000001)
 
 clf.fit(X_train, y_train)
 print("Neural network model training accuracy: {:.2f}".format(clf.score(X_train, y_train)))
