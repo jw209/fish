@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import svm
 from sklearn.neural_network import MLPClassifier
 
-#matplotlib.use("TkAgg")
+matplotlib.use("TkAgg")
 
 fish_data = pd.read_csv('Fish.csv')
 
